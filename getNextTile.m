@@ -1,4 +1,4 @@
-function [tile_x, tile_y] = getNextTile(grid, agent_position, tile_positions)
+function [tile_x, tile_y, index] = getNextTile(grid, agent_position, tile_positions)
 
     ntiles = size(tile_positions, 1);
     mandists = zeros(ntiles,1);

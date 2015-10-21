@@ -5,33 +5,46 @@ function [solution] = searchPath(grid, source, target)
     global LEFT;
     global RIGHT;
     global AGENT;
+    global HOLE;
 
     UP = 1;
     DOWN = 2;
     LEFT = 3;
     RIGHT = 4;
 
-    states_queue = {};
+    states_stack = {};
     evaluated_list = containers.Map(); 
-    head = 1;   
-    states_queue{head} = source;
+    top = 1;
+    
+    state.position = source;
+    state.previous = [];
+    
+    states_stack{top} = state;
     iterations = 1;
     
-    while head <= numel(states_queue) 
+    while  top > 0
         
-        curr_position = states_queue{head};
-        states_queue{head} = [];
-        head = head - 1;
+        c_state = states_stack{top};
+        curr_position = c_state.position;
+        states_stack{top} = [];
+        top = top - 1;
         
-        [i, j] = find(grid == AGENT);
-        grid(i,j) = 0;
-        grid(curr_position(1),curr_position(2)) = AGENT;
         
         if goalAchieved(curr_position, target)
-            iterations
+            if grid(target(1),target(2)) == HOLE
+                solution.position = c_state.previous;
+            else
+                [i, j] = find(grid == AGENT);
+                grid(i,j) = 0;
+                grid(curr_position(1),curr_position(2)) = AGENT;
+                plotGrid(grid);
+                solution.position = curr_position;
+            end
+            
+            solution.iterations = iterations;
             break;
         else
-            
+
             iterations = iterations + 1;
             
             neighbors = generateNeighbors(grid, curr_position);
@@ -44,18 +57,18 @@ function [solution] = searchPath(grid, source, target)
 
             [val, ind] = sort(heuristic_values);
 
-            for i=1:size(ind,1)
+            for i=size(ind,1):-1:1
                next_move = [curr_position neighbors(ind(i),3)];
                if isKey(evaluated_list,num2str(next_move)) == 0
-                    head = head + 1;
-                    states_queue{head} = neighbors(ind(i),1:2);
+                    top = top + 1;
+                    neighbor.position = neighbors(ind(i),1:2);
+                    neighbor.previous = curr_position;
+                    states_stack{top} = neighbor;
                     evaluated_list(num2str(next_move)) = next_move;
                end
             end
         end
     end
-    
-    solution = 1;
 end
 
 function ach = goalAchieved(source, target)

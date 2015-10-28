@@ -12,7 +12,7 @@ function [solution] = searchPathStochastic(grid, source, target)
     DOWN = 2;
     LEFT = 3;
     RIGHT = 4;
-    MAX_K_STAGE = 2;
+    MAX_K_STAGE = 3;
     
     states_stack = {};
     evaluated_list = containers.Map(); 
@@ -54,7 +54,7 @@ function [solution] = searchPathStochastic(grid, source, target)
             policies = zeros(size(neighbors,1),1);
 
             for i=1:size(neighbors,1)
-                policies(i) = calculate_policy_value(grid, neighbors(i, 1:2), target, 1);
+                policies(i) = calculatePolicyValue(grid, curr_position, neighbors(i, 3), target, 1);
             end
 
             [val, ind] = sort(policies);

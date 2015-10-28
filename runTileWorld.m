@@ -11,10 +11,9 @@ AGENT = 4;
 
 grid = generateTileGrid(10, 3, 3, 2);
 
-plotGrid(grid);
-
 [i, j] = find(grid == AGENT);
 agent_position = [i j];
+grid(i,j) = 0;
 
 % Define which tile is chosen
 
@@ -29,24 +28,24 @@ while size(tile_positions,1) > 0
     next_tile = [tile_x tile_y];
     
     [solution] = searchPath(grid, agent_position, next_tile);
-    grid(agent_position(1), agent_position(2)) = 0;
+%     [solution] = searchPathStochastic(grid, agent_position, next_tile);
+
     new_position = solution.position;
-    
-    grid(new_position(1), new_position(2)) = AGENT;
+    grid(new_position(1), new_position(2)) = 0;
     agent_position = [new_position(1) new_position(2)];
     tile_positions(indtile,:) = [];
 
-    plotGrid(grid);
+    plotGrid(grid, agent_position);
     
-    [hole_x, hole_y] = getNextHole(grid, next_tile, hole_positions);
+    [hole_x, hole_y] = getNextHole(grid, agent_position, hole_positions);
     next_hole = [hole_x hole_y];
 
     [solution] = searchPath(grid, agent_position, next_hole);
+%     [solution] = searchPathStochastic(grid, agent_position, next_tile);
     new_position = solution.position;
-    grid(new_position(1), new_position(2)) = AGENT;
     agent_position = [new_position(1) new_position(2)];
 
-    plotGrid(grid);
+    plotGrid(grid, agent_position);
 
 end
 

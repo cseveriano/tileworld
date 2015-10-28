@@ -36,18 +36,17 @@ function [solution] = searchPathStochastic(grid, source, target)
             if grid(target(1),target(2)) == HOLE
                 solution.position = c_state.previous;
             else
-                [i, j] = find(grid == AGENT);
-                grid(i,j) = 0;
-                grid(curr_position(1),curr_position(2)) = AGENT;
-                plotGrid(grid);
+                grid(curr_position(1),curr_position(2)) = 0;
+                plotGrid(grid, curr_position);
                 solution.position = curr_position;
             end
             
             solution.iterations = iterations;
             break;
         else
-
+            
             iterations = iterations + 1;
+            plotGrid(grid, curr_position);
             
             neighbors = generateNeighbors(grid, curr_position);
 

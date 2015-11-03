@@ -3,7 +3,7 @@ function [hole_x, hole_y] = getNextHole(grid, tile_position, hole_positions)
     mandists = zeros(nholes,1);
     
     for i=1:nholes
-        mandists(i) = manhattan_distance(hole_positions(i,:), tile_position);
+        mandists(i) = manhattanDistance(hole_positions(i,:), tile_position);
     end
     
     [value, index] = min(mandists);

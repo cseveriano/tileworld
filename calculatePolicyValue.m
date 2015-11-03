@@ -1,3 +1,13 @@
+% calculatePolicyValue
+%   Calculate policy value
+%
+% Input:  grid: the tile grid
+%         state: agent's current position
+%         action: agent's ext move
+%         target: agent's target (tile or hole)
+%         k_stage: iteration value, used as stop criteria
+% Output: solution: struct containing the last position of the agent and
+% the number of iterations
 function [action_value] = calculatePolicyValue(grid, state, action, target, k_stage)
 global UP;
 global DOWN;
@@ -101,7 +111,7 @@ function [reward] = calculateReward(state, next_state, target)
     if next_state == target
        reward = 10; 
     else
-        reward = manhattan_distance(state, target) - manhattan_distance(next_state, target);
+        reward = manhattanDistance(state, target) - manhattanDistance(next_state, target);
     end
 end
 

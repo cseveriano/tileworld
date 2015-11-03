@@ -1,10 +1,17 @@
+% searchPath
+%   Search the path of an agent to a target.
+%
+% Input:  grid: the tile grid
+%         source: agent's current position
+%         target: agent's target (tile or hole)
+% Output: solution: struct containing the last position of the agent and
+% the number of iterations
 function [solution] = searchPath(grid, source, target)
 
     global UP;
     global DOWN;
     global LEFT;
     global RIGHT;
-    global AGENT;
     global HOLE;
 
     UP = 1;
@@ -30,7 +37,7 @@ function [solution] = searchPath(grid, source, target)
         states_stack{top} = [];
         top = top - 1;
         
-        
+        % Test if the target is found        
         if goalAchieved(curr_position, target)
             if grid(target(1),target(2)) == HOLE
                 solution.position = c_state.previous;
@@ -46,17 +53,20 @@ function [solution] = searchPath(grid, source, target)
 
             iterations = iterations + 1;
             plotGrid(grid, curr_position);
-            
+
+            % Generates possible moves for next step            
             neighbors = generateNeighbors(grid, curr_position);
 
             heuristic_values = zeros(size(neighbors,1),1);
-
+            
+            % Calculates heuristic values for each option
             for i=1:size(neighbors,1)
-                heuristic_values(i) = manhattan_distance(neighbors(i, 1:2),target);
+                heuristic_values(i) = manhattanDistance(neighbors(i, 1:2),target);
             end
 
             [val, ind] = sort(heuristic_values);
 
+            % Test if the same move at the same position was already taken            
             for i=size(ind,1):-1:1
                next_move = [curr_position neighbors(ind(i),3)];
                if isKey(evaluated_list,num2str(next_move)) == 0

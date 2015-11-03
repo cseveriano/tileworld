@@ -1,10 +1,17 @@
+% searchPathStochastic
+%   Search the path of an agent to a target under a stochastic context.
+%
+% Input:  grid: the tile grid
+%         source: agent's current position
+%         target: agent's target (tile or hole)
+% Output: solution: struct containing the last position of the agent and
+% the number of iterations
 function [solution] = searchPathStochastic(grid, source, target)
 
     global UP;
     global DOWN;
     global LEFT;
     global RIGHT;
-    global AGENT;
     global HOLE;
     global MAX_K_STAGE;
     
@@ -32,6 +39,7 @@ function [solution] = searchPathStochastic(grid, source, target)
         top = top - 1;
         
         
+        % Test if the target is found        
         if goalAchieved(curr_position, target)
             if grid(target(1),target(2)) == HOLE
                 solution.position = c_state.previous;
@@ -48,10 +56,12 @@ function [solution] = searchPathStochastic(grid, source, target)
             iterations = iterations + 1;
             plotGrid(grid, curr_position);
             
+            % Generates possible moves for next step            
             neighbors = generateNeighbors(grid, curr_position);
 
             policies = zeros(size(neighbors,1),1);
 
+            % Calculates policies
             for i=1:size(neighbors,1)
                 policies(i) = calculatePolicyValue(grid, curr_position, neighbors(i, 3), target, 1);
             end

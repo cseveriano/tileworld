@@ -1,3 +1,11 @@
+% generateTileGrid
+%   Generate a random board with tiles, holes and obstacles
+%
+% Input:  dimension: board dimension. If dimension=3 a 3x3 board is created
+%         ntiles: number of tiles
+%         nholes: number of holes
+%         nwalls: number of obstacles
+% Output: tileGrid: tile world board
 function [tileGrid] = generateTileGrid(dimension, ntiles, nholes, nwalls)
 
 global TILE;
@@ -5,11 +13,6 @@ global HOLE;
 global WALL;
 global AGENT;
 
-    dimension = 10;
-    ntiles = 3;
-    nholes = 3;
-    nwalls = 2;
-    
     % Create empty Tile Grid
     tileGrid = zeros(dimension);
     
